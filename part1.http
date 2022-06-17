@@ -1,0 +1,111 @@
+@url=http://localhost:9200
+
+### Node info
+GET {{url}}
+
+### Find all
+GET {{url}}/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+###
+GET {{url}}/_cluster/health
+Content-Type: application/json
+
+###
+GET {{url}}/_nodes/stats
+Content-Type: application/json
+
+### Create index favorite_candy
+PUT {{url}}/favorite_candy
+Content-Type: application/json
+
+{
+  "settings": {
+    "index": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0
+    }
+  }
+}
+
+### Delete index favorite_candy
+DELETE {{url}}/favorite_candy
+Content-Type: application/json
+
+### Explain
+GET {{url}}/_cluster/allocation/explain
+
+### Create a document in favorite_candy index
+POST {{url}}/favorite_candy/_doc
+Content-Type: application/json
+
+{
+  "first_name": "Alex",
+  "candy": "void candy"
+}
+
+### Replace a document with id 1 in favorite_candy index
+PUT {{url}}/favorite_candy/_doc/1
+Content-Type: application/json
+
+{
+  "first_name": "John",
+  "candy": "Starburst"
+}
+
+### Find document with id 1 in favorite_candy index
+GET {{url}}/favorite_candy/_doc/1
+
+### Replace a document with id 2 in favorite_candy index
+PUT {{url}}/favorite_candy/_doc/2
+Content-Type: application/json
+
+{
+  "first_name": "Rachel",
+  "candy": "Rolos"
+}
+
+### Replace a document with id 2 in favorite_candy index
+PUT {{url}}/favorite_candy/_doc/2
+Content-Type: application/json
+
+{
+  "first_name": "Rachel",
+  "candy": "Rolos (Updated)"
+}
+
+### Find document with id 2 in favorite_candy index
+GET {{url}}/favorite_candy/_doc/2
+
+### Create a document with id 3 in favorite_candy index
+### Or fail if document with id 3 already exists
+PUT {{url}}/favorite_candy/_create/3
+Content-Type: application/json
+
+{
+  "first_name": "Tom",
+  "candy": "Sweet tarts"
+}
+
+### Partially update a document with id 3 in favorite_candy index
+POST {{url}}/favorite_candy/_update/3
+Content-Type: application/json
+
+{
+  "doc": {
+    "first_name": "No longer the Tom"
+  }
+}
+
+### Find document with id 3 in favorite_candy index
+GET {{url}}/favorite_candy/_doc/3
+
+### Delete document with id 3 in favorite_candy index
+DELETE {{url}}/favorite_candy/_doc/3
+
